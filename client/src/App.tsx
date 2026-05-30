@@ -1,5 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 
+const API_URL = 'https://shabbat-l9o1.onrender.com';
+
 // Types
 interface Task { _id?: string; title: string; isCompleted: boolean; }
 interface Checklist { _id?: string; user?: string; tasks: Task[]; }
@@ -121,7 +123,7 @@ function App() {
   const fetchShabbatTimes = async (token: string, lat: number, lng: number, cityName?: string) => {
     setLoadingShabbat(true);
     try {
-      const url = `http://localhost:4000/api/shabbat?lat=${lat}&lng=${lng}${cityName ? `&cityName=${encodeURIComponent(cityName)}` : ''}`;
+      const url = `${API_URL}/api/shabbat?lat=${lat}&lng=${lng}${cityName ? `&cityName=${encodeURIComponent(cityName)}` : ''}`;
       const response = await fetch(url, { headers: { 'Authorization': `Bearer ${token}` } });
       const data = await response.json();
       if (response.ok) {
@@ -159,7 +161,7 @@ function App() {
 
   const fetchChecklist = async (token: string) => {
     try {
-      const response = await fetch('http://localhost:4000/api/checklist', { headers: { 'Authorization': `Bearer ${token}` } });
+      const response = await fetch(`${API_URL}/api/checklist`, { headers: { 'Authorization': `Bearer ${token}` } });
       const data = await response.json();
       if (data.needsSetup) { setNeedsSetup(true); setView('setup'); }
       else { setChecklist(data); }
@@ -171,7 +173,7 @@ function App() {
     setAuthLoading(true); setAuthError('');
     const endpoint = isLoginMode ? '/api/users/login' : '/api/users/register';
     try {
-      const response = await fetch(`http://localhost:4000${endpoint}`, {
+      const response = await fetch(`${API_URL}${endpoint}`, {
         method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(authForm),
       });
       const data = await response.json();
@@ -187,7 +189,7 @@ function App() {
   const handleSetupSubmit = async () => {
     if (selectedTasks.length === 0) return alert('נא לבחור לפחות משימה אחת');
     try {
-      const response = await fetch('http://localhost:4000/api/checklist/setup', {
+      const response = await fetch(`${API_URL}/api/checklist/setup`, {
         method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${user?.token}` },
         body: JSON.stringify({ tasks: selectedTasks }),
       });
@@ -201,7 +203,7 @@ function App() {
     const task = checklist.tasks.find(t => t._id === taskId);
     if (!task) return;
     try {
-      const response = await fetch(`http://localhost:4000/api/checklist/${taskId}`, {
+      const response = await fetch(`${API_URL}/api/checklist/${taskId}`, {
         method: 'PUT', headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${user?.token}` },
         body: JSON.stringify({ isCompleted: !task.isCompleted }),
       });
