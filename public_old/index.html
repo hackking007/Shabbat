@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>שבת שלום</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700;900&display=swap"
+    rel="stylesheet"
+  />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div id="app">
+
+    <!-- ── מסך חיפוש מיקום ── -->
+    <section id="location-screen" class="screen active">
+      <div class="hero">
+        <div class="candles">🕯️🕯️</div>
+        <h1>שבת שלום</h1>
+        <p class="subtitle">הזן את מיקומך לקבלת זמני שבת, פרשת השבוע ועוד</p>
+      </div>
+
+      <div class="search-container">
+        <div class="search-box">
+          <input
+            type="text"
+            id="city-input"
+            placeholder="הזן עיר (למשל: תל אביב, ירושלים, ניו יורק...)"
+            autocomplete="off"
+          />
+          <div id="autocomplete-list" class="autocomplete-list" role="listbox"></div>
+        </div>
+
+        <button id="geo-btn" class="btn-secondary">
+          <span aria-hidden="true">📍</span> השתמש במיקומי הנוכחי
+        </button>
+
+        <button id="search-btn" class="btn-primary">הצג זמני שבת</button>
+      </div>
+    </section>
+
+    <!-- ── מסך טעינה ── -->
+    <section id="loading-screen" class="screen">
+      <div class="loading-content">
+        <div class="loader-icon">🕎</div>
+        <p class="loading-text">טוען זמני שבת…</p>
+      </div>
+    </section>
+
+    <!-- ── מסך תוצאות ── -->
+    <section id="results-screen" class="screen">
+      <header class="results-header">
+        <button id="back-btn" aria-label="חזור">← חזור</button>
+        <div class="location-display" id="location-name"></div>
+      </header>
+
+      <main class="results-grid">
+
+        <!-- פרשה -->
+        <div class="card card-parasha">
+          <div class="card-label">פרשת השבוע</div>
+          <div id="parasha-name" class="parasha-name"></div>
+          <div id="shabbat-date" class="shabbat-date"></div>
+        </div>
+
+        <!-- זמנים -->
+        <div class="card card-times">
+          <div class="time-block">
+            <div class="time-label">🕯️ כניסת שבת</div>
+            <div id="candle-lighting" class="time-value"></div>
+            <div class="time-sub">הדלקת נרות</div>
+          </div>
+          <div class="time-sep">✦</div>
+          <div class="time-block">
+            <div class="time-label">✡ יציאת שבת</div>
+            <div id="havdalah" class="time-value"></div>
+            <div class="time-sub">הבדלה</div>
+          </div>
+        </div>
+
+        <!-- דבר תורה -->
+        <div class="card card-dvar">
+          <div class="card-label">📖 דבר תורה</div>
+          <p id="dvar-torah"></p>
+        </div>
+
+        <!-- הלכות -->
+        <div class="card card-halachot">
+          <div class="card-label">⚖️ הלכות שבת</div>
+          <div class="halachot-list">
+            <div class="halacha-item">
+              <span class="halacha-num">א</span>
+              <p id="halacha-1"></p>
+            </div>
+            <div class="halacha-item">
+              <span class="halacha-num">ב</span>
+              <p id="halacha-2"></p>
+            </div>
+          </div>
+        </div>
+
+      </main>
+
+      <footer class="results-footer">שבת שלום ומבורך ✨</footer>
+    </section>
+
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
