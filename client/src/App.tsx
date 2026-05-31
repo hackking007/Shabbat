@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 
-const API_URL = 'https://shabbat-l9o1.onrender.com';
+// כתובת ריקה = אותה כתובת שממנה נטען האתר (ה-Frontend וה-API חיים יחד באותו שרת Render)
+const API_URL = '';
 
 // Types
 interface Task { _id?: string; title: string; isCompleted: boolean; }
