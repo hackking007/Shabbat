@@ -17,6 +17,8 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 import shabbatRoutes from './server/routes/shabbatRoutes.js'; // נתיבים הקשורים לזמני שבת ותוכן AI
 import authRoutes from './server/routes/authRoutes.js'; // נתיבים הקשורים להרשמה והתחברות משתמשים
 import checklistRoutes from './server/routes/checklistRoutes.js'; // נתיבים הקשורים לרשימת המטלות (Checklist)
+import statsRoutes from './server/routes/statsRoutes.js'; // נתיב הסטטיסטיקות (כמות משתמשים וכניסות)
+import { trackVisit } from './server/controllers/statsController.js'; // פונקציה שסופרת כניסות לאתר
 
 // קריאה לפונקציה שמחברת אותנו למסד הנתונים MongoDB Atlas
 connectDB();
@@ -32,6 +34,13 @@ app.use(express.json()); // מאפשר לשרת לקרוא ולהבין גוף �
 app.use('/api/shabbat', shabbatRoutes); // ניתוב בקשות הקשורות לשבת
 app.use('/api/users', authRoutes); // ניתוב בקשות הקשורות למשתמשים (Login/Register)
 app.use('/api/checklist', checklistRoutes); // ניתוב בקשות הקשורות לצ'קליסט האישי
+app.use('/api/stats', statsRoutes); // ניתוב לדף הסטטיסטיקות
+
+// ספירת כניסות: בכל טעינה של דף הבית מעלים את מונה הכניסות (בשקט, בלי לעכב את הבקשה)
+app.use((req, res, next) => {
+  if (req.method === 'GET' && req.path === '/') trackVisit();
+  next();
+});
 
 // הגשת אתר ה-React הבנוי (client/dist) מתוך אותו שרת - כך ה-Frontend וה-API חיים באותה כתובת
 const clientDist = path.join(__dirname, 'client', 'dist'); // הנתיב לתיקיית הבילד של ה-Frontend
